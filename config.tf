@@ -1,29 +1,34 @@
 variable "app_name" {
   description = "Website project name"
-  default     = "raj-personal-site"
+  default     = "react-example"
 }
 
 variable "aws_region" {
   description = "AWS Region for the VPC"
-  default     = "us-east-1"
+  default     = "eu-west-2"
 }
 
 variable "git_repository_owner" {
-  description = "Github Repository Owner"
-  default     = "msfidelis"
+  default = "alenhodzic85"
 }
 
 variable "git_repository_name" {
   description = "Project name on Github"
-  default     = "msfidelis.github.io"
+  default     = "react-demo-app"
 }
 
 variable "git_repository_branch" {
   description = "Github Project Branch"
-  default     = "master"
+  default     = "main"
+}
+
+variable "account_id" {
+  description = "AWS Account ID"
+  default     = "688902215375"
 }
 
 variable "git_repository_dev_branch" {
   description = "Github Project Branch"
   default     = "develop"
 }
+

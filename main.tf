@@ -1,6 +1,8 @@
 provider "aws" {
-  region = "${var.aws_region}"
+  region = var.aws_region
 }
 
 // Account infos reference
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+}
+

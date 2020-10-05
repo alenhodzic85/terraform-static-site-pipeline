@@ -1,11 +1,14 @@
 resource "aws_codepipeline" "prod_pipeline" {
   name     = "${var.app_name}-${var.git_repository_branch}-pipeline"
-  role_arn = "${aws_iam_role.codepipeline_role.arn}"
+  role_arn = aws_iam_role.codepipeline_role.arn
 
-  depends_on = ["aws_s3_bucket.bucket_site", "aws_s3_bucket.source"]
-  
+  depends_on = [
+    aws_s3_bucket.bucket_site,
+    aws_s3_bucket.source,
+  ]
+
   artifact_store {
-    location = "${aws_s3_bucket.source.bucket}"
+    location = aws_s3_bucket.source.bucket
     type     = "S3"
   }
 
@@ -20,10 +23,11 @@ resource "aws_codepipeline" "prod_pipeline" {
       version          = "1"
       output_artifacts = ["source"]
 
-      configuration {
-        Owner  = "${var.git_repository_owner}"
-        Repo   = "${var.git_repository_name}"
-        Branch = "${var.git_repository_branch}"
+      configuration = {
+        Owner  = var.git_repository_owner
+        Repo   = var.git_repository_name
+        Branch = var.git_repository_branch
+        OAuthToken = "9167c9a62f64a9a4c57b94b6780f469964a87725"
       }
     }
   }
@@ -32,16 +36,17 @@ resource "aws_codepipeline" "prod_pipeline" {
     name = "Deploy"
 
     action {
-      name             = "Build"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      version          = "1"
-      input_artifacts  = ["source"]
+      name            = "Build"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      version         = "1"
+      input_artifacts = ["source"]
 
-      configuration {
+      configuration = {
         ProjectName = "${var.app_name}-${var.git_repository_branch}-codebuild"
       }
     }
   }
 }
+
